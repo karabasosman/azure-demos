@@ -50,18 +50,14 @@ For ($i=$start; $i -le $end; $i++) {
                                              -virtualMachineName $prefix-vm-$i `
                                              -virtualMachineSize $vmSize `
                                              -diagnosticsStorageAccountName $diagStorageName  `
-                                             -autoShutdownTime $shutdownTime `
-                                             -
-
+                                             -autoShutdownTime $shutdownTime
     $workspaceName=$prefix+"ml"+$i
 
      $mlDep=New-AzureRmResourceGroupDeployment -ResourceGroupName $rg.ResourceGroupName `
                                                -Name $prefix-$i-deployment `
                                                -workspaceName $workspaceName `
                                                  -location $location `
-                                               -TemplateFile .\azure.ml.json `
-                                             
-                                                                                      
+                                               -TemplateFile .\azure.ml.json                                   
 
      Write-Host "....VM $prefix-user-$i created...."
    
