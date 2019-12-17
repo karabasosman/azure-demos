@@ -12,7 +12,24 @@
             "type": "String"
         },
         "networkSecurityGroupRules": {
-            "type": "Array"
+            "type": "Array",
+            "value": [
+                {
+                    "name": "RDP",
+                    "properties": {
+                        "priority": 1010,
+                        "protocol": "TCP",
+                        "access": "Allow",
+                        "direction": "Inbound",
+                        "sourceApplicationSecurityGroups": [],
+                        "destinationApplicationSecurityGroups": [],
+                        "sourceAddressPrefix": "*",
+                        "sourcePortRange": "*",
+                        "destinationAddressPrefix": "*",
+                        "destinationPortRange": "3389"
+                    }
+                }
+            ]
         },
         "subnetName": {
             "type": "String"
