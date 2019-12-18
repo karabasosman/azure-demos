@@ -5,6 +5,12 @@
         "location": {
             "type": "String"
         },
+        "admin_password": {
+            "type": "SecureString"
+        },
+        "admin_username": {
+            "type": "String"
+        },
         "website_name": {
             "defaultValue": "oskmsdev",
             "type": "String"
@@ -795,7 +801,8 @@
                 },
                 "osProfile": {
                     "computerName": "[parameters('vm_name')]",
-                    "adminUsername": "karabasosman",
+                    "adminUsername": "[parameters('admin_username')]",
+                    "adminPassword": "[parameters('admin_password')]",
                     "windowsConfiguration": {
                         "provisionVMAgent": true,
                         "enableAutomaticUpdates": true
