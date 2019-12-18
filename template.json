@@ -167,7 +167,8 @@
             "location": "[parameters('location')]",
             "kind": "v12.0",
             "properties": {
-                "administratorLogin": "oskmsdev",
+                "administratorLogin": "azureadm",
+                "administratorLoginPassword":"qweASD123!!!",
                 "version": "12.0"
             }
         },
