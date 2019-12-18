@@ -48,7 +48,6 @@
             }
         },
         {
-            "condition": "[equals(parameters('vnet-new-or-existing'), 'existing')]",
             "apiVersion": "2019-02-01",
             "type": "Microsoft.Network/virtualNetworks/subnets",
             "name": "[concat(parameters('vnet-name'), '/', variables('bastion-subnet-name'))]",
