@@ -2,8 +2,8 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "vulnerabilityAssessments_Default_storageContainerPath": {
-            "type": "SecureString"
+        "location": {
+            "type": "String"
         },
         "website_name": {
             "defaultValue": "oskmsdev",
@@ -40,15 +40,43 @@
         "nsg_name": {
             "defaultValue": "osk-msdev-vm-nsg",
             "type": "String"
+        },
+        "shutdown_time": {
+            "type": "String"
         }
     },
     "variables": {},
     "resources": [
+         {
+            "type": "Microsoft.DevTestLab/schedules",
+            "apiVersion": "2017-04-26-preview",
+            "name": "[concat('shutdown-computevm-', parameters('vm_name'))]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[concat('Microsoft.Compute/virtualMachines/', parameters('vm_name'))]"
+            ],
+            "properties": {
+                "status": "Enabled",
+                "taskType": "ComputeVmShutdownTask",
+                "dailyRecurrence": {
+                    "time": "[parameters('shutdown_time')]"
+                },
+                "timeZoneId": "UTC",
+                "targetResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('vm_name'))]",
+                "notificationSettings": {
+                    "status": "Disabled",
+                    "notificationLocale": "en",
+                    "timeInMinutes": "30"
+                }
+            }
+        }
+        
+        ,
         {
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2019-09-01",
             "name": "[parameters('nsg_name')]",
-            "location": "westeurope",
+            "location": "[parameters('location')]",
             "properties": {
                 "securityRules": [
                     {
@@ -75,7 +103,7 @@
             "type": "Microsoft.Network/publicIPAddresses",
             "apiVersion": "2019-09-01",
             "name": "[parameters('ip_name')]",
-            "location": "westeurope",
+            "location": "[parameters('location')]",
             "sku": {
                 "name": "Basic"
             },
@@ -91,7 +119,7 @@
             "type": "Microsoft.Network/virtualNetworks",
             "apiVersion": "2019-09-01",
             "name": "[parameters('vnet_name')]",
-            "location": "westeurope",
+            "location": "[parameters('location')]",
             "properties": {
                 "addressSpace": {
                     "addressPrefixes": [
@@ -130,7 +158,7 @@
             "type": "Microsoft.Sql/servers",
             "apiVersion": "2015-05-01-preview",
             "name": "[parameters('sql_server_name')]",
-            "location": "westeurope",
+            "location": "[parameters('location')]",
             "kind": "v12.0",
             "properties": {
                 "administratorLogin": "oskmsdev",
@@ -141,7 +169,7 @@
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2019-04-01",
             "name": "[parameters('diag_str_name')]",
-            "location": "westeurope",
+            "location": "[parameters('location')]",
             "sku": {
                 "name": "Standard_LRS",
                 "tier": "Standard"
@@ -166,6 +194,18 @@
                     },
                     "keySource": "Microsoft.Storage"
                 }
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2015-05-01-preview",
+            "name": "[concat(parameters('sql_server_name'), '/allow-all')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
+            ],
+            "properties": {
+                "startIpAddress": "0.0.0.0",
+                "endIpAddress": "255.255.255.255"
             }
         },
         {
@@ -331,7 +371,7 @@
             "type": "Microsoft.Sql/servers/databases",
             "apiVersion": "2019-06-01-preview",
             "name": "[concat(parameters('sql_server_name'), '/oskmsdev')]",
-            "location": "westeurope",
+            "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
@@ -724,7 +764,7 @@
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2019-03-01",
             "name": "[parameters('vm_name')]",
-            "location": "westeurope",
+            "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic_name'))]",
                 "[resourceId('Microsoft.Storage/StorageAccounts', parameters('diag_str_name'))]"
@@ -972,7 +1012,7 @@
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2019-09-01",
             "name": "[parameters('nic_name')]",
-            "location": "westeurope",
+            "location": "[parameters('location')]",
             "dependsOn": [
                 "[resourceId('Microsoft.Network/publicIPAddresses', parameters('ip_name'))]",
                 "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnet_name'), 'default')]",
