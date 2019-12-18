@@ -168,7 +168,7 @@
             "kind": "v12.0",
             "properties": {
                 "administratorLogin": "azureadm",
-                "administratorLoginPassword":"qweASD123!!!",
+                "administratorLoginPassword":"[parameters('admin_password')]",
                 "version": "12.0"
             }
         },
