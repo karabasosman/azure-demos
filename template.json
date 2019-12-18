@@ -304,8 +304,8 @@
                     "location": "[parameters('location')]",
                     "name": "allow-all",
                     "properties": {
-                        "endIpAddress": "0.0.0.0",
-                        "startIpAddress": "255.255.255.255"
+                        "endIpAddress": "255.255.255.255",
+                        "startIpAddress": "0.0.0.0"
                     },
                     "type": "firewallrules"
                 }
