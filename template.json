@@ -5,88 +5,49 @@
         "vulnerabilityAssessments_Default_storageContainerPath": {
             "type": "SecureString"
         },
-        "sites_oskmsdev_name": {
+        "website_name": {
             "defaultValue": "oskmsdev",
             "type": "String"
         },
-        "servers_oskmsdev_sql_name": {
+        "sql_server_name": {
             "defaultValue": "oskmsdev-sql",
             "type": "String"
         },
-        "serverfarms_ASP_oskmsdevrg_a7ea_name": {
+        "serverfarms_name": {
             "defaultValue": "ASP-oskmsdevrg-a7ea",
             "type": "String"
         },
-        "virtualMachines_osk_msdev_vm_name": {
+        "vm_name": {
             "defaultValue": "osk-msdev-vm",
             "type": "String"
         },
-        "storageAccounts_oskmsdevrgdiag_name": {
+        "diag_str_name": {
             "defaultValue": "oskmsdevrgdiag",
             "type": "String"
         },
-        "networkInterfaces_osk_msdev_vm303_name": {
+        "nic_name": {
             "defaultValue": "osk-msdev-vm303",
             "type": "String"
         },
-        "publicIPAddresses_osk_msdev_vm_ip_name": {
+        "ip_name": {
             "defaultValue": "osk-msdev-vm-ip",
             "type": "String"
         },
-        "virtualNetworks_osk_msdev_rg_vnet_name": {
+        "vnet_name": {
             "defaultValue": "osk-msdev-rg-vnet",
             "type": "String"
         },
-        "networkSecurityGroups_osk_msdev_vm_nsg_name": {
+        "nsg_name": {
             "defaultValue": "osk-msdev-vm-nsg",
-            "type": "String"
-        },
-        "publicIPAddresses_osk_msdev_rg_vnet_ip_name": {
-            "defaultValue": "osk-msdev-rg-vnet-ip",
-            "type": "String"
-        },
-        "smartdetectoralertrules_failure_anomalies___oskmsdev_name": {
-            "defaultValue": "failure anomalies - oskmsdev",
-            "type": "String"
-        },
-        "components_oskmsdev_externalid": {
-            "defaultValue": "/subscriptions/e78205d9-e16b-4d3d-abfa-70456be563c2/resourceGroups/osk-msdev-rg/providers/microsoft.insights/components/oskmsdev",
-            "type": "String"
-        },
-        "actiongroups_application_20insights_20smart_20detection_externalid": {
-            "defaultValue": "/subscriptions/e78205d9-e16b-4d3d-abfa-70456be563c2/resourceGroups/osk-win-rg/providers/microsoft.insights/actiongroups/application%20insights%20smart%20detection",
             "type": "String"
         }
     },
     "variables": {},
     "resources": [
         {
-            "type": "microsoft.alertsmanagement/smartdetectoralertrules",
-            "apiVersion": "2019-06-01",
-            "name": "[parameters('smartdetectoralertrules_failure_anomalies___oskmsdev_name')]",
-            "location": "global",
-            "properties": {
-                "description": "Failure Anomalies notifies you of an unusual rise in the rate of failed HTTP requests or dependency calls.",
-                "state": "Enabled",
-                "severity": "Sev3",
-                "frequency": "PT1M",
-                "detector": {
-                    "id": "FailureAnomaliesDetector"
-                },
-                "scope": [
-                    "[parameters('components_oskmsdev_externalid')]"
-                ],
-                "actionGroups": {
-                    "groupIds": [
-                        "[parameters('actiongroups_application_20insights_20smart_20detection_externalid')]"
-                    ]
-                }
-            }
-        },
-        {
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2019-09-01",
-            "name": "[parameters('networkSecurityGroups_osk_msdev_vm_nsg_name')]",
+            "name": "[parameters('nsg_name')]",
             "location": "westeurope",
             "properties": {
                 "securityRules": [
@@ -113,23 +74,7 @@
         {
             "type": "Microsoft.Network/publicIPAddresses",
             "apiVersion": "2019-09-01",
-            "name": "[parameters('publicIPAddresses_osk_msdev_rg_vnet_ip_name')]",
-            "location": "westeurope",
-            "sku": {
-                "name": "Standard"
-            },
-            "properties": {
-                "ipAddress": "40.119.145.233",
-                "publicIPAddressVersion": "IPv4",
-                "publicIPAllocationMethod": "Static",
-                "idleTimeoutInMinutes": 4,
-                "ipTags": []
-            }
-        },
-        {
-            "type": "Microsoft.Network/publicIPAddresses",
-            "apiVersion": "2019-09-01",
-            "name": "[parameters('publicIPAddresses_osk_msdev_vm_ip_name')]",
+            "name": "[parameters('ip_name')]",
             "location": "westeurope",
             "sku": {
                 "name": "Basic"
@@ -145,7 +90,7 @@
         {
             "type": "Microsoft.Network/virtualNetworks",
             "apiVersion": "2019-09-01",
-            "name": "[parameters('virtualNetworks_osk_msdev_rg_vnet_name')]",
+            "name": "[parameters('vnet_name')]",
             "location": "westeurope",
             "properties": {
                 "addressSpace": {
@@ -184,7 +129,7 @@
         {
             "type": "Microsoft.Sql/servers",
             "apiVersion": "2015-05-01-preview",
-            "name": "[parameters('servers_oskmsdev_sql_name')]",
+            "name": "[parameters('sql_server_name')]",
             "location": "westeurope",
             "kind": "v12.0",
             "properties": {
@@ -195,7 +140,7 @@
         {
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2019-04-01",
-            "name": "[parameters('storageAccounts_oskmsdevrgdiag_name')]",
+            "name": "[parameters('diag_str_name')]",
             "location": "westeurope",
             "sku": {
                 "name": "Standard_LRS",
@@ -226,7 +171,7 @@
         {
             "type": "Microsoft.Web/serverfarms",
             "apiVersion": "2018-02-01",
-            "name": "[parameters('serverfarms_ASP_oskmsdevrg_a7ea_name')]",
+            "name": "[parameters('serverfarms_name')]",
             "location": "West Europe",
             "sku": {
                 "name": "P3v2",
@@ -250,9 +195,9 @@
         {
             "type": "Microsoft.Network/networkSecurityGroups/securityRules",
             "apiVersion": "2019-09-01",
-            "name": "[concat(parameters('networkSecurityGroups_osk_msdev_vm_nsg_name'), '/RDP')]",
+            "name": "[concat(parameters('nsg_name'), '/RDP')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_osk_msdev_vm_nsg_name'))]"
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsg_name'))]"
             ],
             "properties": {
                 "protocol": "TCP",
@@ -272,9 +217,9 @@
         {
             "type": "Microsoft.Network/virtualNetworks/subnets",
             "apiVersion": "2019-09-01",
-            "name": "[concat(parameters('virtualNetworks_osk_msdev_rg_vnet_name'), '/AzureBastionSubnet')]",
+            "name": "[concat(parameters('vnet_name'), '/AzureBastionSubnet')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_osk_msdev_rg_vnet_name'))]"
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnet_name'))]"
             ],
             "properties": {
                 "addressPrefix": "192.168.254.0/26",
@@ -287,9 +232,9 @@
         {
             "type": "Microsoft.Network/virtualNetworks/subnets",
             "apiVersion": "2019-09-01",
-            "name": "[concat(parameters('virtualNetworks_osk_msdev_rg_vnet_name'), '/default')]",
+            "name": "[concat(parameters('vnet_name'), '/default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_osk_msdev_rg_vnet_name'))]"
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnet_name'))]"
             ],
             "properties": {
                 "addressPrefix": "192.168.253.0/24",
@@ -302,9 +247,9 @@
         {
             "type": "Microsoft.Sql/servers/advisors",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/CreateIndex')]",
+            "name": "[concat(parameters('sql_server_name'), '/CreateIndex')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "autoExecuteValue": "Disabled"
@@ -313,9 +258,9 @@
         {
             "type": "Microsoft.Sql/servers/advisors",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/DbParameterization')]",
+            "name": "[concat(parameters('sql_server_name'), '/DbParameterization')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "autoExecuteValue": "Disabled"
@@ -324,9 +269,9 @@
         {
             "type": "Microsoft.Sql/servers/advisors",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/DefragmentIndex')]",
+            "name": "[concat(parameters('sql_server_name'), '/DefragmentIndex')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "autoExecuteValue": "Disabled"
@@ -335,9 +280,9 @@
         {
             "type": "Microsoft.Sql/servers/advisors",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/DropIndex')]",
+            "name": "[concat(parameters('sql_server_name'), '/DropIndex')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "autoExecuteValue": "Disabled"
@@ -346,9 +291,9 @@
         {
             "type": "Microsoft.Sql/servers/advisors",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/ForceLastGoodPlan')]",
+            "name": "[concat(parameters('sql_server_name'), '/ForceLastGoodPlan')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "autoExecuteValue": "Disabled"
@@ -357,10 +302,10 @@
         {
             "type": "Microsoft.Sql/servers/auditingPolicies",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/Default')]",
+            "name": "[concat(parameters('sql_server_name'), '/Default')]",
             "location": "West Europe",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "auditingState": "Disabled"
@@ -369,9 +314,9 @@
         {
             "type": "Microsoft.Sql/servers/auditingSettings",
             "apiVersion": "2017-03-01-preview",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/Default')]",
+            "name": "[concat(parameters('sql_server_name'), '/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "state": "Disabled",
@@ -385,10 +330,10 @@
         {
             "type": "Microsoft.Sql/servers/databases",
             "apiVersion": "2019-06-01-preview",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/oskmsdev')]",
+            "name": "[concat(parameters('sql_server_name'), '/oskmsdev')]",
             "location": "westeurope",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "sku": {
                 "name": "GP_Gen5",
@@ -411,10 +356,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/auditingPolicies",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/master/Default')]",
+            "name": "[concat(parameters('sql_server_name'), '/master/Default')]",
             "location": "West Europe",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "auditingState": "Disabled"
@@ -423,9 +368,9 @@
         {
             "type": "Microsoft.Sql/servers/databases/auditingSettings",
             "apiVersion": "2017-03-01-preview",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/master/Default')]",
+            "name": "[concat(parameters('sql_server_name'), '/master/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "state": "Disabled",
@@ -438,9 +383,9 @@
         {
             "type": "Microsoft.Sql/servers/databases/extendedAuditingSettings",
             "apiVersion": "2017-03-01-preview",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/master/Default')]",
+            "name": "[concat(parameters('sql_server_name'), '/master/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "state": "Disabled",
@@ -453,10 +398,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/geoBackupPolicies",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/master/Default')]",
+            "name": "[concat(parameters('sql_server_name'), '/master/Default')]",
             "location": "West Europe",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "state": "Enabled"
@@ -465,9 +410,9 @@
         {
             "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
             "apiVersion": "2018-06-01-preview",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/master/Default')]",
+            "name": "[concat(parameters('sql_server_name'), '/master/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "state": "Disabled",
@@ -484,10 +429,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/master/current')]",
+            "name": "[concat(parameters('sql_server_name'), '/master/current')]",
             "location": "West Europe",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "status": "Disabled"
@@ -496,9 +441,9 @@
         {
             "type": "Microsoft.Sql/servers/databases/vulnerabilityAssessments",
             "apiVersion": "2017-03-01-preview",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/master/Default')]",
+            "name": "[concat(parameters('sql_server_name'), '/master/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "recurringScans": {
@@ -510,9 +455,9 @@
         {
             "type": "Microsoft.Sql/servers/encryptionProtector",
             "apiVersion": "2015-05-01-preview",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/current')]",
+            "name": "[concat(parameters('sql_server_name'), '/current')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "kind": "servicemanaged",
             "properties": {
@@ -523,9 +468,9 @@
         {
             "type": "Microsoft.Sql/servers/extendedAuditingSettings",
             "apiVersion": "2017-03-01-preview",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/Default')]",
+            "name": "[concat(parameters('sql_server_name'), '/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "state": "Disabled",
@@ -539,9 +484,9 @@
         {
             "type": "Microsoft.Sql/servers/firewallRules",
             "apiVersion": "2015-05-01-preview",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/AllowAllWindowsAzureIps')]",
+            "name": "[concat(parameters('sql_server_name'), '/AllowAllWindowsAzureIps')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "startIpAddress": "0.0.0.0",
@@ -551,9 +496,9 @@
         {
             "type": "Microsoft.Sql/servers/keys",
             "apiVersion": "2015-05-01-preview",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/ServiceManaged')]",
+            "name": "[concat(parameters('sql_server_name'), '/ServiceManaged')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "kind": "servicemanaged",
             "properties": {
@@ -563,9 +508,9 @@
         {
             "type": "Microsoft.Sql/servers/securityAlertPolicies",
             "apiVersion": "2017-03-01-preview",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/Default')]",
+            "name": "[concat(parameters('sql_server_name'), '/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "state": "Disabled",
@@ -582,9 +527,9 @@
         {
             "type": "Microsoft.Sql/servers/vulnerabilityAssessments",
             "apiVersion": "2018-06-01-preview",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/Default')]",
+            "name": "[concat(parameters('sql_server_name'), '/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "recurringScans": {
@@ -597,9 +542,9 @@
         {
             "type": "Microsoft.Storage/storageAccounts/blobServices",
             "apiVersion": "2019-04-01",
-            "name": "[concat(parameters('storageAccounts_oskmsdevrgdiag_name'), '/default')]",
+            "name": "[concat(parameters('diag_str_name'), '/default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_oskmsdevrgdiag_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('diag_str_name'))]"
             ],
             "sku": {
                 "name": "Standard_LRS"
@@ -616,27 +561,27 @@
         {
             "type": "Microsoft.Web/sites",
             "apiVersion": "2018-11-01",
-            "name": "[parameters('sites_oskmsdev_name')]",
+            "name": "[parameters('website_name')]",
             "location": "West Europe",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_oskmsdevrg_a7ea_name'))]"
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_name'))]"
             ],
             "kind": "app",
             "properties": {
                 "enabled": true,
                 "hostNameSslStates": [
                     {
-                        "name": "[concat(parameters('sites_oskmsdev_name'), '.azurewebsites.net')]",
+                        "name": "[concat(parameters('website_name'), '.azurewebsites.net')]",
                         "sslState": "Disabled",
                         "hostType": "Standard"
                     },
                     {
-                        "name": "[concat(parameters('sites_oskmsdev_name'), '.scm.azurewebsites.net')]",
+                        "name": "[concat(parameters('website_name'), '.scm.azurewebsites.net')]",
                         "sslState": "Disabled",
                         "hostType": "Repository"
                     }
                 ],
-                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_ASP_oskmsdevrg_a7ea_name'))]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_name'))]",
                 "reserved": false,
                 "isXenon": false,
                 "hyperV": false,
@@ -653,10 +598,10 @@
         {
             "type": "Microsoft.Web/sites/config",
             "apiVersion": "2018-11-01",
-            "name": "[concat(parameters('sites_oskmsdev_name'), '/web')]",
+            "name": "[concat(parameters('website_name'), '/web')]",
             "location": "West Europe",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_oskmsdev_name'))]"
+                "[resourceId('Microsoft.Web/sites', parameters('website_name'))]"
             ],
             "properties": {
                 "numberOfWorkers": 1,
@@ -765,10 +710,10 @@
         {
             "type": "Microsoft.Web/sites/hostNameBindings",
             "apiVersion": "2018-11-01",
-            "name": "[concat(parameters('sites_oskmsdev_name'), '/', parameters('sites_oskmsdev_name'), '.azurewebsites.net')]",
+            "name": "[concat(parameters('website_name'), '/', parameters('website_name'), '.azurewebsites.net')]",
             "location": "West Europe",
             "dependsOn": [
-                "[resourceId('Microsoft.Web/sites', parameters('sites_oskmsdev_name'))]"
+                "[resourceId('Microsoft.Web/sites', parameters('website_name'))]"
             ],
             "properties": {
                 "siteName": "oskmsdev",
@@ -778,11 +723,11 @@
         {
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2019-03-01",
-            "name": "[parameters('virtualMachines_osk_msdev_vm_name')]",
+            "name": "[parameters('vm_name')]",
             "location": "westeurope",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_osk_msdev_vm303_name'))]",
-                "[resourceId('Microsoft.Storage/StorageAccounts', parameters('storageAccounts_oskmsdevrgdiag_name'))]"
+                "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic_name'))]",
+                "[resourceId('Microsoft.Storage/StorageAccounts', parameters('diag_str_name'))]"
             ],
             "properties": {
                 "hardwareProfile": {
@@ -797,19 +742,19 @@
                     },
                     "osDisk": {
                         "osType": "Windows",
-                        "name": "[concat(parameters('virtualMachines_osk_msdev_vm_name'), '_OsDisk_1_1b162198b53043e9b0612410a9430d1f')]",
+                        "name": "[concat(parameters('vm_name'), '_OsDisk_1_1b162198b53043e9b0612410a9430d1f')]",
                         "createOption": "FromImage",
                         "caching": "ReadWrite",
                         "managedDisk": {
                             "storageAccountType": "Premium_LRS",
-                            "id": "[resourceId('Microsoft.Compute/disks', concat(parameters('virtualMachines_osk_msdev_vm_name'), '_OsDisk_1_1b162198b53043e9b0612410a9430d1f'))]"
+                            "id": "[resourceId('Microsoft.Compute/disks', concat(parameters('vm_name'), '_OsDisk_1_1b162198b53043e9b0612410a9430d1f'))]"
                         },
                         "diskSizeGB": 127
                     },
                     "dataDisks": []
                 },
                 "osProfile": {
-                    "computerName": "[parameters('virtualMachines_osk_msdev_vm_name')]",
+                    "computerName": "[parameters('vm_name')]",
                     "adminUsername": "karabasosman",
                     "windowsConfiguration": {
                         "provisionVMAgent": true,
@@ -821,14 +766,14 @@
                 "networkProfile": {
                     "networkInterfaces": [
                         {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('networkInterfaces_osk_msdev_vm303_name'))]"
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('nic_name'))]"
                         }
                     ]
                 },
                 "diagnosticsProfile": {
                     "bootDiagnostics": {
                         "enabled": true,
-                        "storageUri": "[concat('https://', parameters('storageAccounts_oskmsdevrgdiag_name'), '.blob.core.windows.net/')]"
+                        "storageUri": "[concat('https://', parameters('diag_str_name'), '.blob.core.windows.net/')]"
                     }
                 }
             }
@@ -836,10 +781,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/advisors",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/oskmsdev/CreateIndex')]",
+            "name": "[concat(parameters('sql_server_name'), '/oskmsdev/CreateIndex')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_oskmsdev_sql_name'), 'oskmsdev')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('sql_server_name'), 'oskmsdev')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "autoExecuteValue": "Disabled"
@@ -848,10 +793,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/advisors",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/oskmsdev/DbParameterization')]",
+            "name": "[concat(parameters('sql_server_name'), '/oskmsdev/DbParameterization')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_oskmsdev_sql_name'), 'oskmsdev')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('sql_server_name'), 'oskmsdev')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "autoExecuteValue": "Disabled"
@@ -860,10 +805,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/advisors",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/oskmsdev/DefragmentIndex')]",
+            "name": "[concat(parameters('sql_server_name'), '/oskmsdev/DefragmentIndex')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_oskmsdev_sql_name'), 'oskmsdev')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('sql_server_name'), 'oskmsdev')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "autoExecuteValue": "Disabled"
@@ -872,10 +817,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/advisors",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/oskmsdev/DropIndex')]",
+            "name": "[concat(parameters('sql_server_name'), '/oskmsdev/DropIndex')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_oskmsdev_sql_name'), 'oskmsdev')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('sql_server_name'), 'oskmsdev')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "autoExecuteValue": "Disabled"
@@ -884,10 +829,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/advisors",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/oskmsdev/ForceLastGoodPlan')]",
+            "name": "[concat(parameters('sql_server_name'), '/oskmsdev/ForceLastGoodPlan')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_oskmsdev_sql_name'), 'oskmsdev')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('sql_server_name'), 'oskmsdev')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "autoExecuteValue": "Disabled"
@@ -896,11 +841,11 @@
         {
             "type": "Microsoft.Sql/servers/databases/auditingPolicies",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/oskmsdev/Default')]",
+            "name": "[concat(parameters('sql_server_name'), '/oskmsdev/Default')]",
             "location": "West Europe",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_oskmsdev_sql_name'), 'oskmsdev')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('sql_server_name'), 'oskmsdev')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "auditingState": "Disabled"
@@ -909,10 +854,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/auditingSettings",
             "apiVersion": "2017-03-01-preview",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/oskmsdev/Default')]",
+            "name": "[concat(parameters('sql_server_name'), '/oskmsdev/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_oskmsdev_sql_name'), 'oskmsdev')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('sql_server_name'), 'oskmsdev')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "state": "Disabled",
@@ -925,10 +870,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/backupShortTermRetentionPolicies",
             "apiVersion": "2017-10-01-preview",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/oskmsdev/default')]",
+            "name": "[concat(parameters('sql_server_name'), '/oskmsdev/default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_oskmsdev_sql_name'), 'oskmsdev')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('sql_server_name'), 'oskmsdev')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "retentionDays": 7
@@ -937,10 +882,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/extendedAuditingSettings",
             "apiVersion": "2017-03-01-preview",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/oskmsdev/Default')]",
+            "name": "[concat(parameters('sql_server_name'), '/oskmsdev/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_oskmsdev_sql_name'), 'oskmsdev')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('sql_server_name'), 'oskmsdev')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "state": "Disabled",
@@ -953,11 +898,11 @@
         {
             "type": "Microsoft.Sql/servers/databases/geoBackupPolicies",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/oskmsdev/Default')]",
+            "name": "[concat(parameters('sql_server_name'), '/oskmsdev/Default')]",
             "location": "West Europe",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_oskmsdev_sql_name'), 'oskmsdev')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('sql_server_name'), 'oskmsdev')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "state": "Enabled"
@@ -966,10 +911,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/securityAlertPolicies",
             "apiVersion": "2018-06-01-preview",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/oskmsdev/Default')]",
+            "name": "[concat(parameters('sql_server_name'), '/oskmsdev/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_oskmsdev_sql_name'), 'oskmsdev')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('sql_server_name'), 'oskmsdev')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "state": "Disabled",
@@ -986,11 +931,11 @@
         {
             "type": "Microsoft.Sql/servers/databases/transparentDataEncryption",
             "apiVersion": "2014-04-01",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/oskmsdev/current')]",
+            "name": "[concat(parameters('sql_server_name'), '/oskmsdev/current')]",
             "location": "West Europe",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_oskmsdev_sql_name'), 'oskmsdev')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('sql_server_name'), 'oskmsdev')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "status": "Enabled"
@@ -999,10 +944,10 @@
         {
             "type": "Microsoft.Sql/servers/databases/vulnerabilityAssessments",
             "apiVersion": "2017-03-01-preview",
-            "name": "[concat(parameters('servers_oskmsdev_sql_name'), '/oskmsdev/Default')]",
+            "name": "[concat(parameters('sql_server_name'), '/oskmsdev/Default')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers/databases', parameters('servers_oskmsdev_sql_name'), 'oskmsdev')]",
-                "[resourceId('Microsoft.Sql/servers', parameters('servers_oskmsdev_sql_name'))]"
+                "[resourceId('Microsoft.Sql/servers/databases', parameters('sql_server_name'), 'oskmsdev')]",
+                "[resourceId('Microsoft.Sql/servers', parameters('sql_server_name'))]"
             ],
             "properties": {
                 "recurringScans": {
@@ -1014,10 +959,10 @@
         {
             "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
             "apiVersion": "2019-04-01",
-            "name": "[concat(parameters('storageAccounts_oskmsdevrgdiag_name'), '/default/bootdiagnostics-oskmsdevv-7ed2947e-a792-4a59-b107-a4558d7ca878')]",
+            "name": "[concat(parameters('diag_str_name'), '/default/bootdiagnostics-oskmsdevv-7ed2947e-a792-4a59-b107-a4558d7ca878')]",
             "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('storageAccounts_oskmsdevrgdiag_name'), 'default')]",
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccounts_oskmsdevrgdiag_name'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('diag_str_name'), 'default')]",
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('diag_str_name'))]"
             ],
             "properties": {
                 "publicAccess": "None"
@@ -1026,12 +971,12 @@
         {
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2019-09-01",
-            "name": "[parameters('networkInterfaces_osk_msdev_vm303_name')]",
+            "name": "[parameters('nic_name')]",
             "location": "westeurope",
             "dependsOn": [
-                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_osk_msdev_vm_ip_name'))]",
-                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_osk_msdev_rg_vnet_name'), 'default')]",
-                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_osk_msdev_vm_nsg_name'))]"
+                "[resourceId('Microsoft.Network/publicIPAddresses', parameters('ip_name'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnet_name'), 'default')]",
+                "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsg_name'))]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -1041,10 +986,10 @@
                             "privateIPAddress": "192.168.253.4",
                             "privateIPAllocationMethod": "Dynamic",
                             "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('publicIPAddresses_osk_msdev_vm_ip_name'))]"
+                                "id": "[resourceId('Microsoft.Network/publicIPAddresses', parameters('ip_name'))]"
                             },
                             "subnet": {
-                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_osk_msdev_rg_vnet_name'), 'default')]"
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnet_name'), 'default')]"
                             },
                             "primary": true,
                             "privateIPAddressVersion": "IPv4"
@@ -1057,7 +1002,7 @@
                 "enableAcceleratedNetworking": false,
                 "enableIPForwarding": false,
                 "networkSecurityGroup": {
-                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('networkSecurityGroups_osk_msdev_vm_nsg_name'))]"
+                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', parameters('nsg_name'))]"
                 }
             }
         }
