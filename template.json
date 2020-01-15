@@ -3,87 +3,55 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "location": {
-            "type": "String"
+            "type": "string"
         },
         "networkInterfaceName": {
-            "type": "String"
+            "type": "string"
         },
         "networkSecurityGroupName": {
-            "type": "String"
+            "type": "string"
         },
         "networkSecurityGroupRules": {
-            "type": "Array",
-            "defaultValue": [
-                {
-                    "name": "RDP",
-                    "properties": {
-                        "priority": 1010,
-                        "protocol": "TCP",
-                        "access": "Allow",
-                        "direction": "Inbound",
-                        "sourceApplicationSecurityGroups": [],
-                        "destinationApplicationSecurityGroups": [],
-                        "sourceAddressPrefix": "*",
-                        "sourcePortRange": "*",
-                        "destinationAddressPrefix": "*",
-                        "destinationPortRange": "3389"
-                    }
-                }
-            ]
+            "type": "array"
         },
         "subnetName": {
-            "type": "String"
+            "type": "string"
         },
         "virtualNetworkId": {
-            "type": "String"
-        },
-        "publicIpAddressName": {
-            "type": "String"
-        },
-        "publicIpAddressType": {
-            "type": "String"
-        },
-        "publicIpAddressSku": {
-            "type": "String"
+            "type": "string"
         },
         "virtualMachineName": {
-            "type": "String"
+            "type": "string"
+        },
+        "virtualMachineRG": {
+            "type": "string"
         },
         "osDiskType": {
-            "type": "String"
+            "type": "string"
         },
         "virtualMachineSize": {
-            "type": "String"
+            "type": "string"
         },
         "adminUsername": {
-            "type": "String"
+            "type": "string"
         },
         "adminPassword": {
-            "type": "SecureString"
+            "type": "secureString"
         },
         "diagnosticsStorageAccountName": {
-            "type": "String"
+            "type": "string"
+        },
+        "diagnosticsStorageAccountId": {
+            "type": "string"
         },
         "diagnosticsStorageAccountType": {
-            "type": "String"
+            "type": "string"
         },
         "diagnosticsStorageAccountKind": {
-            "type": "String"
+            "type": "string"
         },
-        "autoShutdownStatus": {
-            "type": "String"
-        },
-        "autoShutdownTime": {
-            "type": "String"
-        },
-        "autoShutdownTimeZone": {
-            "type": "String"
-        },
-        "autoShutdownNotificationStatus": {
-            "type": "String"
-        },
-        "autoShutdownNotificationLocale": {
-            "type": "String"
+        "zone": {
+            "type": "string"
         }
     },
     "variables": {
@@ -93,13 +61,12 @@
     },
     "resources": [
         {
+            "name": "[parameters('networkInterfaceName')]",
             "type": "Microsoft.Network/networkInterfaces",
             "apiVersion": "2019-07-01",
-            "name": "[parameters('networkInterfaceName')]",
             "location": "[parameters('location')]",
             "dependsOn": [
-                "[concat('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'))]",
-                "[concat('Microsoft.Network/publicIpAddresses/', parameters('publicIpAddressName'))]"
+                "[concat('Microsoft.Network/networkSecurityGroups/', parameters('networkSecurityGroupName'))]"
             ],
             "properties": {
                 "ipConfigurations": [
@@ -109,10 +76,7 @@
                             "subnet": {
                                 "id": "[variables('subnetRef')]"
                             },
-                            "privateIPAllocationMethod": "Dynamic",
-                            "publicIpAddress": {
-                                "id": "[resourceId(resourceGroup().name, 'Microsoft.Network/publicIpAddresses', parameters('publicIpAddressName'))]"
-                            }
+                            "privateIPAllocationMethod": "Dynamic"
                         }
                     }
                 ],
@@ -122,30 +86,18 @@
             }
         },
         {
+            "name": "[parameters('networkSecurityGroupName')]",
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2019-02-01",
-            "name": "[parameters('networkSecurityGroupName')]",
             "location": "[parameters('location')]",
             "properties": {
                 "securityRules": "[parameters('networkSecurityGroupRules')]"
             }
         },
         {
-            "type": "Microsoft.Network/publicIpAddresses",
-            "apiVersion": "2019-02-01",
-            "name": "[parameters('publicIpAddressName')]",
-            "location": "[parameters('location')]",
-            "sku": {
-                "name": "[parameters('publicIpAddressSku')]"
-            },
-            "properties": {
-                "publicIpAllocationMethod": "[parameters('publicIpAddressType')]"
-            }
-        },
-        {
+            "name": "[parameters('virtualMachineName')]",
             "type": "Microsoft.Compute/virtualMachines",
             "apiVersion": "2019-07-01",
-            "name": "[parameters('virtualMachineName')]",
             "location": "[parameters('location')]",
             "dependsOn": [
                 "[concat('Microsoft.Network/networkInterfaces/', parameters('networkInterfaceName'))]",
@@ -163,9 +115,9 @@
                         }
                     },
                     "imageReference": {
-                        "publisher": "microsoft-dsvm",
-                        "offer": "dsvm-windows",
-                        "sku": "server-2016",
+                        "publisher": "microsoftvisualstudio",
+                        "offer": "visualstudio2019latest",
+                        "sku": "vs-2019-comm-latest-ws2019",
                         "version": "latest"
                     }
                 },
@@ -191,46 +143,26 @@
                         "storageUri": "[concat('https://', parameters('diagnosticsStorageAccountName'), '.blob.core.windows.net/')]"
                     }
                 }
-            }
+            },
+            "zones": [
+                "[parameters('zone')]"
+            ]
         },
         {
+            "name": "[parameters('diagnosticsStorageAccountName')]",
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2019-06-01",
-            "name": "[parameters('diagnosticsStorageAccountName')]",
             "location": "[parameters('location')]",
+            "properties": {},
+            "kind": "[parameters('diagnosticsStorageAccountKind')]",
             "sku": {
                 "name": "[parameters('diagnosticsStorageAccountType')]"
-            },
-            "kind": "[parameters('diagnosticsStorageAccountKind')]",
-            "properties": {}
-        },
-        {
-            "type": "Microsoft.DevTestLab/schedules",
-            "apiVersion": "2017-04-26-preview",
-            "name": "[concat('shutdown-computevm-', parameters('virtualMachineName'))]",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[concat('Microsoft.Compute/virtualMachines/', parameters('virtualMachineName'))]"
-            ],
-            "properties": {
-                "status": "[parameters('autoShutdownStatus')]",
-                "taskType": "ComputeVmShutdownTask",
-                "dailyRecurrence": {
-                    "time": "[parameters('autoShutdownTime')]"
-                },
-                "timeZoneId": "[parameters('autoShutdownTimeZone')]",
-                "targetResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('virtualMachineName'))]",
-                "notificationSettings": {
-                    "status": "[parameters('autoShutdownNotificationStatus')]",
-                    "notificationLocale": "[parameters('autoShutdownNotificationLocale')]",
-                    "timeInMinutes": "30"
-                }
             }
         }
     ],
     "outputs": {
         "adminUsername": {
-            "type": "String",
+            "type": "string",
             "value": "[parameters('adminUsername')]"
         }
     }
