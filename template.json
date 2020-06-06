@@ -64,29 +64,6 @@
     },
     "resources": [
         {
-            "type": "Microsoft.DevTestLab/schedules",
-            "apiVersion": "2017-04-26-preview",
-            "name": "[concat('shutdown-computevm-', parameters('vm_name'))]",
-            "location": "[parameters('location')]",
-            "dependsOn": [
-                "[concat('Microsoft.Compute/virtualMachines/', parameters('vm_name'))]"
-            ],
-            "properties": {
-                "status": "Enabled",
-                "taskType": "ComputeVmShutdownTask",
-                "dailyRecurrence": {
-                    "time": "[parameters('shutdown_time')]"
-                },
-                "timeZoneId": "UTC",
-                "targetResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('vm_name'))]",
-                "notificationSettings": {
-                    "status": "Disabled",
-                    "notificationLocale": "en",
-                    "timeInMinutes": "30"
-                }
-            }
-        },
-        {
             "type": "Microsoft.Network/networkSecurityGroups",
             "apiVersion": "2019-09-01",
             "name": "[parameters('nsg_name')]",
@@ -243,8 +220,8 @@
                 "hostingEnvironment": ""
             },
             "sku": {
-                "Tier": "PremiumV2",
-                "Name": "P3v2"
+                "Tier": "Basic",
+                "Name": "B1"
             }
         },
         {
@@ -278,8 +255,8 @@
                         "autoPauseDelay": ""
                     },
                     "sku": {
-                        "name": "GP_Gen5_2",
-                        "tier": "GeneralPurpose"
+                        "name": "Standard",
+                        "tier": "S1"
                     },
                     "type": "databases"
                 },
