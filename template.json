@@ -255,8 +255,8 @@
                         "autoPauseDelay": ""
                     },
                     "sku": {
-                        "name": "Standard",
-                        "tier": "S1"
+                        "name": "S1",
+                        "tier": "Standard"
                     },
                     "type": "databases"
                 },
