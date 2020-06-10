@@ -41,16 +41,19 @@
             "type": "String"
         },
         "publicIpAddressType": {
-            "type": "String"
+            "type": "String",
+            "defaultValue":"Dynamic"
         },
         "publicIpAddressSku": {
-            "type": "String"
+            "type": "String",
+            "defaultValue":"Basic"
         },
         "virtualMachineName": {
             "type": "String"
         },
         "osDiskType": {
-            "type": "String"
+            "type": "String",
+            "defaultValue":"Premium_LRS"
         },
         "virtualMachineSize": {
             "type": "String"
@@ -65,25 +68,31 @@
             "type": "String"
         },
         "diagnosticsStorageAccountType": {
-            "type": "String"
+            "type": "String",
+            "defaultValue":"Standard_LRS"
         },
         "diagnosticsStorageAccountKind": {
-            "type": "String"
+            "type": "String",
+            "defaultValue": "Storage"
         },
         "autoShutdownStatus": {
-            "type": "String"
+            "type": "String",
+            "defaultValue": "Disabled"
         },
         "autoShutdownTime": {
             "type": "String"
         },
         "autoShutdownTimeZone": {
-            "type": "String"
+            "type": "String",
+            "defaultValue": "UTC"
         },
         "autoShutdownNotificationStatus": {
-            "type": "String"
+            "type": "String",
+            "defaultValue": "Disabled"
         },
         "autoShutdownNotificationLocale": {
-            "type": "String"
+            "type": "String",
+            "defaultValue": "en"
         }
     },
     "variables": {
