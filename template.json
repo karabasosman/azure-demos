@@ -173,8 +173,8 @@
                     },
                     "imageReference": {
                         "publisher": "microsoft-dsvm",
-                        "offer": "dsvm-windows",
-                        "sku": "server-2016",
+                        "offer": "dsvm-win-2019",
+                        "sku": "server-2019",
                         "version": "latest"
                     }
                 },
